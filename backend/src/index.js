@@ -10,7 +10,7 @@ async function main() {
         if(err) {
             console.log('error en el puto servidor')
         }else{
-            console.log('el servidor escucha por el puerto 4000')
+            console.log('el servidor escucha por', app.get('port'))
         }
     })
 
