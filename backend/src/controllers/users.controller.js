@@ -1,10 +1,23 @@
 const userCtrl = {}
 
-notesCtrl.getUsers = (req, res) => res.send('users Notes')
+const User = require('../models/User')
 
-notesCtrl.createUser = (req, res) => res.send('users Notes')
+userCtrl.getUsers = async (req, res) => {
+    const users = await User.find()
+    res.json(users)
+}
 
-notesCtrl.deleteUser = (req, res) => res.send('users Notes')
+userCtrl.createUser = async (req, res) => {
+    const { username } = req.body
+    const newUser = new User({ username })
+    await newUser.save()
+    res.json('User created')
+}
+
+userCtrl.deleteUser = async (req, res) => {
+    await User.findByIdAndDelete(req.params.id)
+    res.json('users deleted')
+}
 
 
 module.exports = userCtrl
