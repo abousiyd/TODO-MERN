@@ -34,7 +34,7 @@ export default class CreateUser extends Component {
     }
 
     deleteUser = async (id) => {
-        const aaa = await axios.delete('http://localhost:4000/api/users/' + id)
+        await axios.delete('http://localhost:4000/api/users/' + id)
         this.getUsers()
 
     }
@@ -54,7 +54,7 @@ export default class CreateUser extends Component {
                                     value={this.state.username}
                                 />
                             </div>
-                            <button type='submit' className='btn btn-primary'>
+                            <button type='submit' className='btn btn-primary col-md-4 offset-md-4'>
                                 save
                             </button>
                         </form>
