@@ -1,0 +1,10 @@
+{
+    "terminal.integrated.shell.windows": "C:\\windows\\System32\\cmd.exe",
+    "terminal.integrated.fontSize": 16,
+    "window.zoomLevel": -1,
+    "editor.fontSize": 16,
+    "workbench.iconTheme": "material-icon-theme",
+    "emmet.excludeLanguages": {
+        "javascript": "javascriptreact"
+    }
+}
