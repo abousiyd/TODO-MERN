@@ -11,16 +11,46 @@ export default class CreateNote extends Component {
         userSelected: '',
         title: '',
         content: '',
-        date: new Date
+        date: new Date,
+        editing: false,
+        _id: ''
     }
 
+    
     componentDidMount = async () => {
         const res = await axios.get('http://localhost:4000/api/users')
-        this.setState({users: res.data.map(user => user.username)})
+        this.setState({
+            users: res.data.map(user => user.username),
+            userSelected: res.data[0].username
+        })
+        if(this.props.match.params.id) {
+            const res = await axios.get('http://localhost:4000/api/notes/' + this.props.match.params.id)
+            console.log(res)
+            this.setState({
+                title: res.data.title,
+                content: res.data.content,
+                // date: new Date(res.data.date),
+                userSelected: res.data.author,
+                editing: true,
+                _id: this.props.match.params.id
+            })
+        }
+        
     }
-    onSubmit = (e) => {
-        e.preventDefault()
+    onSubmit = async (e) => {
+        const newNote = {
+            title: this.state.title,
+            content: this.state.content,
+            data: this.state.date,
+            author: this.state.userSelected
+        }
+        if(this.state.editing){
+            await axios.post('http://localhost:4000/api/notes/' + this.state._id, newNote)
 
+        }else{
+            await axios.post('http://localhost:4000/api/notes', newNote)
+        }
+        window.location.href = '/'
     }
     onInputtChange = (e) => {
         this.setState({
@@ -41,6 +71,7 @@ export default class CreateNote extends Component {
                             className='form-control'
                             name='userSelect'
                             onChange={this.onInputtChange}
+                            value={this.state.selected}
                         >
                             {
                                 this.state.users.map(user => 
@@ -59,6 +90,7 @@ export default class CreateNote extends Component {
                             name='title' 
                             placeholder='title' 
                             onChange={this.onInputtChange}
+                            value={this.state.title}
                             required
                         />
                     </div>
@@ -69,6 +101,7 @@ export default class CreateNote extends Component {
                             className='form-control'
                             placeholder='Content'
                             onChange={this.onInputtChange}
+                            value={this.state.content}
                             required
                         >
 
@@ -83,9 +116,9 @@ export default class CreateNote extends Component {
                         />
                     </div>
 
-                    <form type={this.onSubmit} className='btn btn-primary'>
+                    <button onClick={this.onSubmit} className='btn btn-primary'>
                         Save
-                    </form>
+                    </button>
                 </div>
             </div>
         )
